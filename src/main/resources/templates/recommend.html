@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Profile</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+<h1>Profile Edit</h1>
+<h2>Edit Basic Username</h2>
+
+<form th:action="@{'/editProf/'+${p.userid}}" th:object="${p}" method="post">
+    <div><label><input type="text" th:field="*{firstname}"/></label></div>
+    <div><label><input type="text" th:field="*{lastname}" /></label></div>
+    <div><label><input type="text" th:field="*{midinit}" /></label></div>
+    <div><label><input type="text" th:field="*{email}" /></label></div>
+    <div><input type="submit" value="Submit Edit"/></div>
+</form>
+
+<table>
+    <td>
+        <tr><h3>Education</h3></tr>
+        <tr th:each="ed : ${edu}">
+           <!-- <form th:action="@{'/editEdu/'+${ed.personid}}" method="post">
+                <div><label><input type="text" th:field="${ed.degreelevel}"/></label></div>
+                <div><label><input type="text" th:field="${ed.major}" /></label></div>
+                <div><label><input type="text" th:field="${ed.school}" /></label></div>
+                <div><label><input type="text" th:field="${ed.year}" /></label></div>
+                <div><input type="submit" value="Submit Edit"/></div>
+            </form>-->
+            <a th:href="@{'/editEdu/' + ${ed.eduid}}" th:text="'Degree: ' + ${ed.degreelevel} + ' Major: ' + ${ed.major}
+                + ' School: ' + ${ed.school} + ' Year: ' + ${ed.year}"/>
+            <br/>
+        </tr>
+        <tr><h3>Work Experience</h3></tr>
+        <tr th:each="exp : ${exp}">
+            <!-- <p th:text="${job.position}"/>
+    <p th:text="${job.company} + ', ' + ${job.startmonth} + ' ' + ${job.startyear} + ' - ' + ${job.endmonth} + ' ' + ${job.endyear}"/>
+    <p th:text="'- Duty 1, ' + ${job.duty1}"/>
+    <p th:text="'- Duty 2, ' + ${job.duty2}"/>
+             </form>-->
+            <a th:href="@{'/editExp/' + ${exp.expid}}" th:text="'Position: ' + ${exp.position} + ' Company: ' + ${exp.company}
+                + ' Start Month: ' + ${exp.startmonth} + ' Start Year: ' + ${exp.startyear} + ' End Month: ' + ${exp.endmonth}
+                + ' End Year: ' + ${exp.endyear} + ' Duty 1: ' + ${exp.duty1} + ' Duty 2: ' + ${exp.duty2}"/>
+            <br/>
+        </tr>
+        <tr><h3>Skills</h3></tr>
+        <tr th:each="sk : ${skill}">
+            <!-- <p th:text="${job.position}"/>
+    <p th:text="${job.company} + ', ' + ${job.startmonth} + ' ' + ${job.startyear} + ' - ' + ${job.endmonth} + ' ' + ${job.endyear}"/>
+    <p th:text="'- Duty 1, ' + ${job.duty1}"/>
+    <p th:text="'- Duty 2, ' + ${job.duty2}"/>
+             </form>-->
+            <a th:href="@{'/editSkill/' + ${sk.skid}}" th:text="'Skill: ' + ${sk.skill} + ' Proficiency: ' + ${sk.proficiency}"/>
+            <br/>
+        </tr>
+    </td>
+    <br/><br/>
+    <td>
+        <tr>
+            <a th:href="@{'/addEdu/' + ${p.id}}" th:text="'Add another educational experience'"/>
+        </tr>
+        <tr>
+            <a th:href="@{'/addWork/' + ${p.id}}" th:text="'Add another work experience'"/>
+        </tr>
+        <tr>
+            <a th:href="@{'/addSkill/' + ${p.id}}" th:text="'Add another skill'"/>
+        </tr>
+    </td>
+</table>
+<!--
+<div sec:authorize="hasAuthority('ROLE_ADMIN')">
+    <br/>
+    <h2>Search by Company</h2>
+    <form th:action="@{/searchC}" th:object="${exp}" method="post">
+        <div><label> Company : <input type="text" th:field="*{company}"/></label></div>
+        <div><input type="submit" value="Search"/></div>
+    </form>
+    <br/>
+    <h2>Search by School</h2>
+    <form th:action="@{/searchS}" th:object="${edu}" method="post">
+        <div><label> School : <input type="text" th:field="*{school}"/></label></div>
+        <div><input type="submit" value="Search"/></div>
+    </form>
+    <br/>
+    <h2>Search by Skills</h2>
+    <form th:action="@{/searchSk}" th:object="${skill}" method="post">
+        <div><label> Skill : <input type="text" th:field="*{skill}"/></label></div>
+        <div><input type="submit" value="Search"/></div>
+    </form>-->
+</body>
+</html>

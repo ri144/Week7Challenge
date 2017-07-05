@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Results</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+<h1 th:text="'Query Results for ' + ${title}"></h1>
+<table>
+    <tr>
+        <td style="width: 50%;">Name </td>
+        <td style="width: 50%;">Email</td>
+    </tr>
+    <tr th:each="p : ${people}">
+        <td style="width: 50%;"><a th:href="@{'/person/'+ ${p.id}}" th:text="${p.firstName} + ' ' + ${p.midinit} + ' ' + ${p.lastName}"/></td>
+        <td style="width: 50%;" th:text="${p.email}"></td>
+    </tr>
+</table>
+</body>
+</html>

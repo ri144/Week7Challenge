@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Job Seeker Search</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+
+<h1>Job Seeker Search</h1>
+<h2>Search by Username</h2>
+<form th:action="@{/search}" th:object="${person}" method="post">
+    <div><label> First Name : <input type="text" th:field="*{firstName}"/></label></div>
+    <div><label> Last Name : <input type="text" th:field="*{lastName}"/></label></div>
+    <div><label> Middle Initial (1 character max) : <input type="text" th:field="*{midinit}"/></label></div>
+    <div><input type="submit" value="Search"/></div>
+</form>
+<div sec:authorize="hasAuthority('ADMIN')">
+<br/>
+<h2>Search by Company</h2>
+<form th:action="@{/searchC}" th:object="${exp}" method="post">
+    <div><label> Company : <input type="text" th:field="*{company}"/></label></div>
+    <div><input type="submit" value="Search"/></div>
+</form>
+<br/>
+<h2>Search by School</h2>
+<form th:action="@{/searchS}" th:object="${edu}" method="post">
+    <div><label> School : <input type="text" th:field="*{school}"/></label></div>
+    <div><input type="submit" value="Search"/></div>
+</form>
+<br/>
+<h2>Search by Skills</h2>
+<form th:action="@{/searchSk}" th:object="${skill}" method="post">
+    <div><label> Skill : <input type="text" th:field="*{skill}"/></label></div>
+    <div><input type="submit" value="Search"/></div>
+</form>
+</div>
+</body>
+</html>

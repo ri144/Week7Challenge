@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Work Experience</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+<h1>Work Experience Edit</h1>
+<!-- <p th:text="${job.position}"/>
+   <p th:text="${job.company} + ', ' + ${job.startmonth} + ' ' + ${job.startyear} + ' - ' + ${job.endmonth} + ' ' + ${job.endyear}"/>
+   <p th:text="'- Duty 1, ' + ${job.duty1}"/>
+   <p th:text="'- Duty 2, ' + ${job.duty2}"/>
+            </form>-->
+<form th:action="@{'/expResult/'+${exp.personid} + '/' + ${exp.expid}}" th:object="${exp}" method="post">
+    <div><label>  Position : <input type="text" th:field="*{position}"/></label></div>
+    <div><label>  Company  : <input type="text" th:field="*{company}" /></label></div>
+    <div><label>Start Month: <input type="text" th:field="*{startmonth}" /></label></div>
+    <div><label>Start Year : <input type="text" th:field="*{startyear}" /></label></div>
+    <div><label> End Month : <input type="text" th:field="*{endmonth}" /></label></div>
+    <div><label>  End Year : <input type="text" th:field="*{endyear}" /></label></div>
+    <div><label>   Duty 1  : <input type="text" th:field="*{duty1}" /></label></div>
+    <div><label>   Duty 2  : <input type="text" th:field="*{duty2}" /></label></div>
+    <div><input type="submit" value="Submit Edit"/></div>
+</form>
+</body>
+</html>

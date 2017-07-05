@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Skills</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+<h1>Skill Edit</h1>
+<!-- <p th:text="${job.position}"/>
+   <p th:text="${job.company} + ', ' + ${job.startmonth} + ' ' + ${job.startyear} + ' - ' + ${job.endmonth} + ' ' + ${job.endyear}"/>
+   <p th:text="'- Duty 1, ' + ${job.duty1}"/>
+   <p th:text="'- Duty 2, ' + ${job.duty2}"/>
+            </form>-->
+<form th:action="@{'/skillResult/'+${skill.personid} + '/' + ${skill.skid}}" th:object="${skill}" method="post">
+    <div><label>    Skill  : <input type="text" th:field="*{skill}"/></label></div>
+    <div><label>Proficiency: <input type="text" th:field="*{proficiency}" /></label></div>
+    <div><input type="submit" value="Submit Edit"/></div>
+</form>
+</body>
+</html>

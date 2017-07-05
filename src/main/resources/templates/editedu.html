@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Education</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+<h1>Education Edit</h1>
+<form th:action="@{'/eduResult/'+${ed.personid} + '/' + ${ed.eduid}}" th:object="${ed}" method="post">
+    <div><label>    Degree     : <input type="text" th:field="*{degreelevel}"/></label></div>
+    <div><label>     Major     : <input type="text" th:field="*{major}" /></label></div>
+    <div><label>    School     : <input type="text" th:field="*{school}" /></label></div>
+    <div><label>Graduation Year: <input type="text" th:field="*{year}" /></label></div>
+    <div><input type="submit" value="Submit Edit"/></div>
+</form>
+</body>
+</html>
