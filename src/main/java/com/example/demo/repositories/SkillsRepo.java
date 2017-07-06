@@ -11,5 +11,5 @@ import java.util.List;
 public interface SkillsRepo extends CrudRepository<Skills,Integer>{
     public List<Skills> findAllByPersonid(Long personid);
     public List<Skills> findAllBySkill(String skill);
-    public List<Skills> findAllBySkid(Long skid);
+    public List<Skills> findAllBySkid(Integer skid);
 }

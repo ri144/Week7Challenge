@@ -11,5 +11,5 @@ import java.util.List;
 public interface ExperRepo extends CrudRepository<Exper, Integer>{
     public List<Exper> findAllByPersonid(Long personid);
     public List<Exper> findAllByCompany(String company);
-    public List<Exper> findAllByExpid(Long expid);
+    public List<Exper> findAllByExpid(Integer expid);
 }
