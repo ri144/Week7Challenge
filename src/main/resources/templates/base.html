@@ -38,6 +38,9 @@
                     <li><a href="/s">Search Users</a></li>
                 </th:block>
                 <th:block sec:authorize="isAuthenticated()">
+                    <li><a href="/posting">View Job Postings</a></li>
+                </th:block>
+                <th:block sec:authorize="isAuthenticated()">
                     <li><a href="/logout">Logout</a></li>
                 </th:block>
                 <th:block sec:authorize="isAnonymous()">

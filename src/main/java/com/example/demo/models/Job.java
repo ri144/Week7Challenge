@@ -1,9 +1,6 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 
 /**
@@ -15,7 +12,7 @@ public class Job {
     private long personid;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title;
@@ -28,12 +25,17 @@ public class Job {
 
     private double salaryHigh;
 
-    private Collection<Skills> skillsCollection;
+   /* @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "job_personid"),inverseJoinColumns = @JoinColumn(name = "skills_personid"))
+    private Collection<Skills> skillsCollection;*/
+
+   private String skillData;
 
     public long getPersonid() {
         return personid;
     }
 
+    @Column(unique = true)
     public void setPersonid(long personid) {
         this.personid = personid;
     }
@@ -86,11 +88,19 @@ public class Job {
         this.salaryHigh = salaryHigh;
     }
 
-    public Collection<Skills> getSkillsCollection() {
+    public String getSkillData() {
+        return skillData;
+    }
+
+    public void setSkillData(String skillData) {
+        this.skillData = skillData;
+    }
+
+   /* public Collection<Skills> getSkillsCollection() {
         return skillsCollection;
     }
 
     public void setSkillsCollection(Collection<Skills> skillsCollection) {
         this.skillsCollection = skillsCollection;
-    }
+    }*/
 }

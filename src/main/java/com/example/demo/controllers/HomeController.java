@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -39,6 +40,8 @@ public class HomeController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    private JobRepo jobrepo;
 
     @RequestMapping("/")
     public String myprofile(Principal principal, Model model) {
@@ -51,11 +54,16 @@ public class HomeController {
         }
         else{
             //must be a recruiter if they dont have a corresponding profile
-            model.addAttribute("person", new User());
-            model.addAttribute("exp", new Exper());
-            model.addAttribute("edu", new Edu());
-            model.addAttribute("skill", new Skills());
-            return "search";
+           // model.addAttribute("person", new User());
+           // model.addAttribute("exp", new Exper());
+           // model.addAttribute("edu", new Edu());
+          //  model.addAttribute("skill", new Skills());
+           // return "search";
+            List<Job> joblist = jobrepo.findAllByPersonid(user.getId());
+            model.addAttribute("jobState","Your Posted Jobs");
+            model.addAttribute("jobs", joblist);
+
+            return "joblist";
         }
     }
 
@@ -66,6 +74,13 @@ public class HomeController {
         model.addAttribute("edu", new Edu());
         model.addAttribute("skill", new Skills());
         return "search";
+    }
+
+    @RequestMapping("/posting")
+    public String viewJobs(Model model){
+        model.addAttribute("jobState","Posted Jobs");
+        model.addAttribute("jobs", jobrepo.findAll());
+        return "joblist";
     }
 
     @RequestMapping("/login")
@@ -158,19 +173,6 @@ public class HomeController {
         return "person";
     }
 
-    /*
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-     */
     @RequestMapping("/edit/{id}")
     public String editInfo(Model model, @PathVariable("id") Long id){
         User user = userService.findById(id);
@@ -268,6 +270,51 @@ public class HomeController {
         skills.setPersonid(id);
         model.addAttribute("skill", skills);
         return "editskill";
+    }
+
+    @RequestMapping("/addnewjob")
+    public String newJob(Model model, Principal principal){
+        Job j = new Job();
+        j.setPersonid(userService.findByUsername(principal.getName()).getId());
+        jobrepo.save(j);
+        model.addAttribute("job", j);
+        Skills s = new Skills();
+        s.setJobid(j.getId());
+        model.addAttribute("skill", s);
+        return "jobadd";
+    }
+
+    @PostMapping("/newjob/{id}")
+    public String addJob(@ModelAttribute Job job, Model model, Principal principal, @PathVariable("id") Integer id){
+        User user = userService.findByUsername(principal.getName());
+        job.setPersonid(user.getId());
+        job.setId(id);
+        List<Skills> skills = skillsRepo.findAllByJobid(id);
+        String string = "";
+        for(Skills s : skills){
+            string += s.getSkill() + ", " + s.getProficiency() + "\n";
+        }
+        job.setSkillData(string);
+        jobrepo.save(job);
+        model.addAttribute("jobState","Your Posted Jobs");
+        List<Job> joblist = jobrepo.findAllByPersonid(user.getId());
+        model.addAttribute("jobs", joblist);
+        return "joblist";
+    }
+
+    @PostMapping("/jobskill/{id}")
+    public String jobSkill(@ModelAttribute Skills skills, Model model, Principal principal, @PathVariable("id") Integer id){
+        skills.setPersonid(userService.findByUsername(principal.getName()).getId());
+        skills.setJobid(id);
+        skillsRepo.save(skills);
+        Job j = jobrepo.findById(id);
+        List<Skills> skillList = skillsRepo.findAllByJobid(id);
+        model.addAttribute("job", j);
+        Skills s = new Skills();
+        s.setJobid(j.getId());
+        model.addAttribute("skill", s);
+        model.addAttribute("skills", skillList);
+        return "jobadd";
     }
 
     private Model getPersonDataById(Long id, Model model, boolean profile){

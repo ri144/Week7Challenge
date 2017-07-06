@@ -12,4 +12,5 @@ public interface SkillsRepo extends CrudRepository<Skills,Integer>{
     public List<Skills> findAllByPersonid(Long personid);
     public List<Skills> findAllBySkill(String skill);
     public List<Skills> findAllBySkid(Integer skid);
+    public List<Skills> findAllByJobid(Integer jobid);
 }

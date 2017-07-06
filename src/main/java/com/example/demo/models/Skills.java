@@ -17,6 +17,7 @@ public class Skills {
     @Size(max=25)
     private String proficiency;
 
+    private int jobid;
 
     private long personid;
     @Id
@@ -63,4 +64,11 @@ public class Skills {
         this.skid = skid;
     }
 
+    public int getJobid() {
+        return jobid;
+    }
+
+    public void setJobid(int jobid) {
+        this.jobid = jobid;
+    }
 }

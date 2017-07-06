@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Job List</title>
+    <th:block th:replace="base :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="base :: nav"></th:block>
+<br/><br/>
+<h1>List of Jobs</h1>
+<h2 th:text="${jobState}"></h2>
+<table>
+    <tr>
+        <th style="width:100px">Title</th>
+        <th style="width:100px">Employer</th>
+        <th style="width:100px">Salary Range</th>
+        <th style="width:200px">Description</th>
+        <th style="width:200px">Desired Skills</th>
+    </tr>
+    <tr th:each="j : ${jobs}">
+        <td style="width:100px" th:text="${j.title}"> </td>
+        <td style="width:100px" th:text="${j.employer}"> </td>
+        <td style="width:100px" th:text="'$' + ${j.salaryLow} + ' - $' + ${j.salaryHigh}"> </td>
+        <td style="width:200px" th:text="${j.description}"> </td>
+        <td style="width:200px" th:text="${j.skillData}"> </td>
+    </tr>
+</table>
+<div sec:authorize="hasAuthority('ADMIN')">
+    <a href="/addnewjob">Post New Job Offer</a>
+</div>
+</body>
+</html>
