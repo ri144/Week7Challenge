@@ -17,7 +17,6 @@
     <div><label> Middle Initial (1 character max) : <input type="text" th:field="*{midinit}"/></label></div>
     <div><input type="submit" value="Search"/></div>
 </form>
-<div sec:authorize="hasAuthority('ADMIN')">
 <br/>
 <h2>Search by Company</h2>
 <form th:action="@{/searchC}" th:object="${exp}" method="post">
@@ -31,11 +30,19 @@
     <div><input type="submit" value="Search"/></div>
 </form>
 <br/>
+<h2>Search Jobs</h2>
+<form th:action="@{/searchJob}" th:object="${job}" method="post">
+    <div><label> Job Title : <input type="text" th:field="*{title}"/></label></div>
+    <div><input type="submit" value="Search"/></div>
+</form>
+<div sec:authorize="hasAuthority('ADMIN')">
+<br/>
 <h2>Search by Skills</h2>
 <form th:action="@{/searchSk}" th:object="${skill}" method="post">
     <div><label> Skill : <input type="text" th:field="*{skill}"/></label></div>
     <div><input type="submit" value="Search"/></div>
 </form>
 </div>
+<th:block th:replace="base :: footlinks"></th:block>
 </body>
 </html>

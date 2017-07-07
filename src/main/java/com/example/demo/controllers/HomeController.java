@@ -50,6 +50,7 @@ public class HomeController {
             // assume its a job seeker
             model.addAttribute("person", user);
             model = getPersonDataById( user.getId(), model, true);
+            sendNotification(user, model);
             return "person";
         }
         else{
@@ -68,16 +69,20 @@ public class HomeController {
     }
 
     @RequestMapping("/s")
-    public String index(Model model){
+    public String index(Model model, Principal principal){
+        sendNotification(userService.findByUsername(principal.getName()), model);
         model.addAttribute("person", new User());
         model.addAttribute("exp", new Exper());
         model.addAttribute("edu", new Edu());
         model.addAttribute("skill", new Skills());
+        model.addAttribute("job", new Job());
         return "search";
     }
 
     @RequestMapping("/posting")
-    public String viewJobs(Model model){
+    public String viewJobs(Model model, Principal principal){
+        User user = userService.findByUsername(principal.getName());
+        sendNotification(user, model);
         model.addAttribute("jobState","Posted Jobs");
         model.addAttribute("jobs", jobrepo.findAll());
         return "joblist";
@@ -105,11 +110,38 @@ public class HomeController {
         }
         return "login";
     }
+
+    @RequestMapping(value="/registerrec", method = RequestMethod.GET)
+    public String showRegistrationPage2(Model model){
+        model.addAttribute("user", new User());
+        return "registerRecruiter";
+    }
+
+    @RequestMapping(value="/registerrec", method = RequestMethod.POST)
+    public String processRegistrationPage2(@Valid @ModelAttribute("user") User user, BindingResult result, Model model){
+        model.addAttribute("user", user);
+        userValidator.validate(user, result);
+        if (result.hasErrors()) {
+            return "registerRecruiter";
+        } else {
+            userService.saveAdmin(user);
+            model.addAttribute("message", "User Account Successfully Created");
+        }
+        return "login";
+    }
     public UserValidator getUserValidator() {
         return userValidator;
     }
     public void setUserValidator(UserValidator userValidator) {
         this.userValidator = userValidator;
+    }
+
+    @RequestMapping("/searchJob")
+    public String searchJob(@ModelAttribute Job job, Model model) {
+        model.addAttribute("jobState","List of Jobs by Title");
+        List<Job> joblist = jobrepo.findAllByTitle(job.getTitle());
+        model.addAttribute("jobs", joblist);
+        return "joblist";
     }
 
     @RequestMapping("/search")
@@ -166,10 +198,17 @@ public class HomeController {
     }
 
     @RequestMapping("/person/{id}")
-    public String viewPerson(@PathVariable("id") Long id, Model model){
+    public String viewPerson(@PathVariable("id") Long id, Model model, Principal principal){
         User people = userService.findById(id);
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("person", people);
-        model = getPersonDataById(id, model, false);
+        if(people == user){
+            model = getPersonDataById(id, model, true);
+        }
+        else {
+            model = getPersonDataById(id, model, false);
+        }
+        sendNotification(user, model);
         return "person";
     }
 
@@ -292,7 +331,7 @@ public class HomeController {
         List<Skills> skills = skillsRepo.findAllByJobid(id);
         String string = "";
         for(Skills s : skills){
-            string += s.getSkill() + ", " + s.getProficiency() + "\n";
+            string += s.getSkill() + ", " + s.getProficiency() + "<br/>";
         }
         job.setSkillData(string);
         jobrepo.save(job);
@@ -328,6 +367,19 @@ public class HomeController {
             model.addAttribute("edit", "Edit your profile.");
         }
         return model;
+    }
+
+    private void sendNotification(User user, Model model){
+        List<Skills> skillList = skillsRepo.findAllByPersonid(user.getId());
+        List<Skills> skillsList = skillsRepo.findAllByJobidIsNot(0);
+        model.addAttribute("alert", false);
+        for(Skills s : skillList){
+            for(Skills s2 : skillsList){
+                if(s2.getSkill().equals(s.getSkill())){
+                    model.addAttribute("alert", true);
+                }
+            }
+        }
     }
 
 }

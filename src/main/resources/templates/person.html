@@ -8,6 +8,7 @@
 <body>
 <th:block th:replace="base :: nav"></th:block>
 <br/><br/>
+<div class="container">
 <div th:object="${person}">
     <h1 th:text="*{firstName} + ' ' + *{midinit} + ' ' + *{lastName}"/>
     <h2 th:text="*{email}"/>
@@ -36,6 +37,8 @@
 </div>
 <div th:object="${person}">
 <a th:href="@{'/edit/' + *{id}}" th:text="${edit}"></a>
+</div>
+<th:block th:replace="base :: footlinks"></th:block>
 </div>
 </body>
 </html>

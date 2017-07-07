@@ -6,15 +6,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Spring Security Example</title>
     <th:block th:replace="base :: head"></th:block>
 </head>
 <body>
 <th:block th:replace="base :: nav"></th:block>
 <div class="container">
     <br /><br /><br />
-    <h4>New Job Seeker Registration</h4>
-    <form autocomplete="off" action="#" th:action="@{/register}"
+    <h4>New Job Recruiter Registration</h4>
+    <form autocomplete="off" action="#" th:action="@{/registerrec}"
           th:object="${user}" method="post">
         <div class="form-group">
             <label for="firstName">First Name <mark><strong><span th:if="${#fields.hasErrors('firstName')}"
@@ -23,7 +22,7 @@
         </div>
         <div class="form-group">
             <label for="midinit">Middle Initial (1 char.) <mark><strong><span th:if="${#fields.hasErrors('midinit')}"
-                                                                  th:errors="*{midinit}">Mid. Init. Error</span></strong></mark></label>
+                                                                              th:errors="*{midinit}">Mid. Init. Error</span></strong></mark></label>
             <input type="text" class="form-control" id="midinit" placeholder="Middle Initial" th:field="*{midinit}" />
         </div>
         <div class="form-group">
@@ -49,7 +48,7 @@
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </div><!-- /.container -->
-<a href="/registerrec">Are you a Job Recruiter? Sign Up Here!</a>
+<a href="/register">Are you a Job Seeker? Sign Up Here!</a>
 <th:block th:replace="base :: footlinks"></th:block>
 </body>
 </html>
