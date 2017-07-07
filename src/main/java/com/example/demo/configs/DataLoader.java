@@ -33,7 +33,7 @@ public class DataLoader implements CommandLineRunner{
 
     @Override
     public void run(String... strings) throws Exception {
-       /* Edu edu;
+        Edu edu;
         Skills s;
         Exper exp;
         System.out.println("Loading data . . .");
@@ -74,6 +74,6 @@ public class DataLoader implements CommandLineRunner{
         user = new User("sam@every.com","password","Sam","s", "Everyman", true, "everyman");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(adminRole));
-        userRepository.save(user);*/
+        userRepository.save(user);
     }
 }
