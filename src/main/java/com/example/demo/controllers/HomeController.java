@@ -7,6 +7,7 @@ import com.example.demo.models.Exper;
 import com.example.demo.models.*;
 import com.example.demo.repositories.*;
 import com.example.demo.services.UserService;
+import com.example.demo.validators.JobValidator;
 import com.example.demo.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class HomeController {
 
     @Autowired
     private ExperRepo experRepo;
+
+    @Autowired
+    private JobValidator jobValidator;
 
     @Autowired
     private UserValidator userValidator;
@@ -134,6 +138,13 @@ public class HomeController {
     }
     public void setUserValidator(UserValidator userValidator) {
         this.userValidator = userValidator;
+    }
+
+    public JobValidator getJobValidator() {
+        return jobValidator;
+    }
+    public void setJobValidator(JobValidator jobValidator) {
+        this.jobValidator = jobValidator;
     }
 
     @RequestMapping("/searchJob")
@@ -323,21 +334,41 @@ public class HomeController {
         return "jobadd";
     }
 
-    @PostMapping("/newjob/{id}")
-    public String addJob(@ModelAttribute Job job, Model model, Principal principal, @PathVariable("id") Integer id){
-        User user = userService.findByUsername(principal.getName());
-        job.setPersonid(user.getId());
-        job.setId(id);
-        List<Skills> skills = skillsRepo.findAllByJobid(id);
-        String string = "";
-        for(Skills s : skills){
-            string += s.getSkill() + ", " + s.getProficiency() + "<br/>";
+    /*
+    public String processRegistrationPage(@Valid @ModelAttribute("user") User user, BindingResult result, Model model){
+        model.addAttribute("user", user);
+        userValidator.validate(user, result);
+        if (result.hasErrors()) {
+            return "registration";
+        } else {
+            userService.saveUser(user);
+            model.addAttribute("message", "User Account Successfully Created");
         }
-        job.setSkillData(string);
-        jobrepo.save(job);
-        model.addAttribute("jobState","Your Posted Jobs");
-        List<Job> joblist = jobrepo.findAllByPersonid(user.getId());
-        model.addAttribute("jobs", joblist);
+        return "login";
+    }
+
+     */
+
+    @PostMapping("/newjob/{id}")
+    public String addJob(@Valid @ModelAttribute("job") Job job, Model model, Principal principal, @PathVariable("id") Integer id, BindingResult result){
+        jobValidator.validate(job, result);
+        if(result.hasErrors()){
+            return "jobadd";
+        } else {
+            User user = userService.findByUsername(principal.getName());
+            job.setPersonid(user.getId());
+            job.setId(id);
+            List<Skills> skills = skillsRepo.findAllByJobid(id);
+            String string = "";
+            for (Skills s : skills) {
+                string += s.getSkill() + ", " + s.getProficiency() + "<br/>";
+            }
+            job.setSkillData(string);
+            jobrepo.save(job);
+            model.addAttribute("jobState", "Your Posted Jobs");
+            List<Job> joblist = jobrepo.findAllByPersonid(user.getId());
+            model.addAttribute("jobs", joblist);
+        }
         return "joblist";
     }
 

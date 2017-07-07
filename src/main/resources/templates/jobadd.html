@@ -1,29 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <meta charset="UTF-8">
-    <title>New Job</title>
+    <meta charset="UTF-8"/>
+    <title>ConnectUp</title>
     <th:block th:replace="base :: head"></th:block>
 </head>
 <body>
 <th:block th:replace="base :: nav"></th:block>
 <br/><br/>
+<div class="container">
 <h1>Add New Job</h1>
 <form th:action="@{'/newjob/' + ${job.id}}" th:object="${job}" method="post">
-    <div><label>     Title     : <input type="text" th:field="*{title}"/></label></div>
-    <div><label>    Employer   : <input type="text" th:field="*{employer}" /></label></div>
-    <div><label>   Salary Min  : <input type="text" th:field="*{salaryLow}" /></label></div>
-    <div><label>   Salary Max  : <input type="text" th:field="*{salaryHigh}" /></label></div>
-    <div><label>  Description  : <input type="text" th:field="*{description}" /></label></div>
+    <div class="input-group">
+        <span class="input-group-addon"><label><mark><strong><span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">First Name Error</span>
+        </strong></mark>   Title  : </label></span>
+        <input type="text" th:field="*{title}" class="form-control">
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon"><label><mark><strong><span th:if="${#fields.hasErrors('employer')}" th:errors="*{employer}">First Name Error</span>
+        </strong></mark>   Employer  : </label></span>
+        <input type="text" th:field="*{employer}" class="form-control">
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon"><label><mark><strong><span th:if="${#fields.hasErrors('salaryLow')}" th:errors="*{salaryLow}">First Name Error</span>
+        </strong></mark>   Salary Min  : $</label></span>
+        <input type="text" th:field="*{salaryLow}" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <span class="input-group-addon">.00</span>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon"><label><mark><strong><span th:if="${#fields.hasErrors('salaryHigh')}" th:errors="*{salaryHigh}">First Name Error</span>
+        </strong></mark>   Salary Max  : $</label></span>
+        <input type="text" th:field="*{salaryHigh}" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <span class="input-group-addon">.00</span>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon"><label><mark><strong><span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">First Name Error</span>
+        </strong></mark>  Description  : </label></span>
+        <input type="text" th:field="*{description}" class="form-control">
+    </div>
     <div><input type="submit" value="Submit Job"/></div>
 </form>
 <div th:each="s : ${skills}">
     <p th:text="${s.skill} + ', ' + ${s.proficiency}"/>
 </div>
 <form th:action="@{'/jobskill/' + ${job.id}}" th:object="${skill}" method="post">
-    <div><label>    Skill  : <input type="text" th:field="*{skill}"/></label></div>
-    <div><label>Proficiency: <input type="text" th:field="*{proficiency}" /></label></div>
+    <div class="input-group">
+        <span class="input-group-addon"><label>   Skill  : </label></span>
+        <input type="text" th:field="*{skill}" class="form-control">
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon"><label>Proficiency : </label></span>
+        <input type="text" th:field="*{proficiency}" class="form-control">
+    </div>
     <div><input type="submit" value="Add Skill"/></div>
 </form>
+</div>
 </body>
 </html>

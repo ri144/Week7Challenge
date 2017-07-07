@@ -36,7 +36,7 @@ public class UserValidator implements Validator {
             errors.rejectValue("password","user.password.tooShort");
         }
         if(mid.length() > 1){
-            errors.rejectValue("midinit","user.midinit.tooLong");
+            errors.rejectValue("midinit","user.mid.tooLong");
         }
         if(userRepository.countByEmail(email)>0){
             errors.rejectValue("email", "user.email.duplicate");

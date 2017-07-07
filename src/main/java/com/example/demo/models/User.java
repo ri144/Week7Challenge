@@ -7,7 +7,7 @@ package com.example.demo.models;
 import javax.persistence.*;
 import javax.persistence.Id;
 import java.util.Collection;
-
+@Table(name = "userData")
 @Entity
 public class User {
     @Id
