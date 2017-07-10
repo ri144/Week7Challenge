@@ -353,6 +353,9 @@ public class HomeController {
     public String addJob(@Valid @ModelAttribute("job") Job job, Model model, Principal principal, @PathVariable("id") Integer id, BindingResult result){
         jobValidator.validate(job, result);
         if(result.hasErrors()){
+            Skills s = new Skills();
+            s.setJobid(job.getId());
+            model.addAttribute("skill", s);
             return "jobadd";
         } else {
             User user = userService.findByUsername(principal.getName());
